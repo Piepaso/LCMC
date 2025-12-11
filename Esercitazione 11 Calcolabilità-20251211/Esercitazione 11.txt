@@ -1,0 +1,98 @@
+-----------------------------------------------------------------------------
+CORREZIONE ESERCIZI PER OGGI
+-----------------------------------------------------------------------------
+
+COMPLETARE CODE GENERATION TRAMITE VISITA DELL'(ENRICHED) AST PER FOOL.g4
+
+Completare la realizzazione della code generation dei programmi FOOL la cui 
+sintassi e' in FOOL.g4, includendo anche il codice generato per il corpo delle 
+funzioni (durante la visita del nodo FunNode).
+
+1) Modificare CodeGenerationASTVisitor.java aggiungendo, nell'argomento di 
+"putCode()" invocato dal metodo di visita di FunNode, il codice generato per 
+il corpo di una funzione (preceduto dalla relativa etichetta funl+":"). 
+Il codice generato, deve effettuare la seguente sequenza di passi:
+
+// set $fp to $sp value 
+// load $ra value
+// generate code for local declarations 
+
+// generate code for function body expression
+
+// set $tm to popped value (function result)
+// remove local declarations from stack
+// set $ra to popped value
+// remove Access Link from stack 
+// remove parameters from stack
+// set $fp to popped value (Control Link)
+// load $tm value
+// load $ra value
+// jump to popped address
+
+Per quanto riguarda il passo "generate code for local declarations" 
+utilizzare una stringa "declCode" creata come per il ProgLetInNode.
+CONSEGNA: CodeGenerationASTVisitor.java
+
+2) Testare il codice creato con il semplice esempio in "prova3.fool" e provare 
+a capire funzionamento del codice generato, visualizzando "prova3.fool.asm". 
+Successivamente testare il codice creato con l'esempio in "prova.fool".
+
+LOGICA PROPOSIZIONI
+
+Per ognuna delle seguenti formule dire se  , o meno, logicamente equivalente a 
+(-p \/ -q) => r.
+Giustificare la risposta: in caso negativo mostrare un modello che le distingua 
+(cio  tale che una sia vera e l'altra sia falsa).
+(-q \/ -r) => p
+r \/ -(q => -p)
+
+AUTOMI (LTS)
+
+Considerare l'automa contenuto nel file "esempio.adr".
+Per ognuna delle seguenti propriet  dire se la propriet  vale o no. In caso di 
+risposta negativa indicare una traccia massimale che non soddisfi la propriet . 
+<>c 
+a U ()b
+
+-----------------------------------------------------------------------------
+VERSIONE FINALE COMPILATORE SOTTOLINGUAGGIO DI FOOL SVILUPPATO A LEZIONE
+-----------------------------------------------------------------------------
+
+Sono state effettuate alcune modifiche finali rispetto alla versione che 
+abbiamo sviluppato all'ultimo laboratorio (estesa dall'esercizio per oggi).
+I files finali, da cui partire per il progetto di esame, sono forniti nella 
+directory "versione finale compilatore".
+
+Modifiche per garantire che l'AST, le STentry e i tipi una volta creati siano 
+immutabili:
+- campi settati da costruttore resi "final"
+- se campi List applicato Collections.unmodifiableList() durante la costruzione
+- nuova classe DecNode da cui ereditano nodi che sono dichiarazioni 
+(fornisce campo "type" settabile solo da dentro classe che lo eredita, es. 
+tramite costruttore)
+
+Le estensioni del linguaggio da fare per il progetto di esame comporteranno 
+la sola modifica di files dentro il package "compiler" (a parte l'aggiunta 
+di nuovi metodi di visita dentro BaseASTVisitor).
+In tale package e' stata introdotta una nuova classe TypeRels per la definizione 
+di relazioni tra tipi (come "isSubtype" che e' stata qui spostata da FOOLlib).
+
+-----------------------------------------------------------------------------
+ESERCIZI SU CALCOLABILITA'
+-----------------------------------------------------------------------------
+
+1) Si consideri il seguente linguaggio:
+L = { w_<x,y> | x e y sono tali che L(M_x) e L(M_y) hanno una stringa in comune }
+dove M_x e M_y sono la x-esima e la y-esima macchina di Turing. 
+Dire se L e' ricorsivo, ricorsivamente enumerabile, o nemmeno ricorsivamente enumerabile. 
+Giustificare la risposta.
+
+2) Si consideri il seguente linguaggio:
+L = { w_<x,y> | x e y sono tali che L(M_x) e L(M_y) NON hanno stringhe in comune }
+dove M_x e M_y sono la x-esima e la y-esima macchina di Turing. 
+Dire se L e' ricorsivo, ricorsivamente enumerabile, o nemmeno ricorsivamente enumerabile. 
+Giustificare la risposta.
+
+ESERCIZIO DI CLASSIFICAZIONE
+
+Si consideri il linguaggio delle stringhe a^n b^n c^n. Classificare il linguaggio dicendo se e' un linguaggio regolare, libero, ricorsivo, ricorsivamente enumerabile, o nemmeno ricorsivamente enumerabile. Giustificare la risposta.
