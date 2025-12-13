@@ -1,4 +1,4 @@
-// Generated from C:/Users/pietro.pasini4/Desktop/FOOL/src/compiler/FOOL.g4 by ANTLR 4.13.2
+// Generated from /home/paso/Documents/Uni/LCMC/progetto_compilatore/FOOL/src/compiler/FOOL.g4 by ANTLR 4.13.2
 package compiler;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -17,6 +17,66 @@ public interface FOOLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitProg(FOOLParser.ProgContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code letInProg}
+	 * labeled alternative in {@link FOOLParser#progbody}.
+	 * @param ctx the parse tree
+	 */
+	void enterLetInProg(FOOLParser.LetInProgContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code letInProg}
+	 * labeled alternative in {@link FOOLParser#progbody}.
+	 * @param ctx the parse tree
+	 */
+	void exitLetInProg(FOOLParser.LetInProgContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code noDecProg}
+	 * labeled alternative in {@link FOOLParser#progbody}.
+	 * @param ctx the parse tree
+	 */
+	void enterNoDecProg(FOOLParser.NoDecProgContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code noDecProg}
+	 * labeled alternative in {@link FOOLParser#progbody}.
+	 * @param ctx the parse tree
+	 */
+	void exitNoDecProg(FOOLParser.NoDecProgContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code vardec}
+	 * labeled alternative in {@link FOOLParser#dec}.
+	 * @param ctx the parse tree
+	 */
+	void enterVardec(FOOLParser.VardecContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code vardec}
+	 * labeled alternative in {@link FOOLParser#dec}.
+	 * @param ctx the parse tree
+	 */
+	void exitVardec(FOOLParser.VardecContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code fundec}
+	 * labeled alternative in {@link FOOLParser#dec}.
+	 * @param ctx the parse tree
+	 */
+	void enterFundec(FOOLParser.FundecContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code fundec}
+	 * labeled alternative in {@link FOOLParser#dec}.
+	 * @param ctx the parse tree
+	 */
+	void exitFundec(FOOLParser.FundecContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code call}
+	 * labeled alternative in {@link FOOLParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterCall(FOOLParser.CallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code call}
+	 * labeled alternative in {@link FOOLParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitCall(FOOLParser.CallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code print}
 	 * labeled alternative in {@link FOOLParser#exp}.
@@ -90,6 +150,18 @@ public interface FOOLListener extends ParseTreeListener {
 	 */
 	void exitInteger(FOOLParser.IntegerContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code id}
+	 * labeled alternative in {@link FOOLParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterId(FOOLParser.IdContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code id}
+	 * labeled alternative in {@link FOOLParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitId(FOOLParser.IdContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code eq}
 	 * labeled alternative in {@link FOOLParser#exp}.
 	 * @param ctx the parse tree
@@ -125,4 +197,28 @@ public interface FOOLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPlus(FOOLParser.PlusContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code intType}
+	 * labeled alternative in {@link FOOLParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntType(FOOLParser.IntTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code intType}
+	 * labeled alternative in {@link FOOLParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntType(FOOLParser.IntTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code boolType}
+	 * labeled alternative in {@link FOOLParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolType(FOOLParser.BoolTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code boolType}
+	 * labeled alternative in {@link FOOLParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolType(FOOLParser.BoolTypeContext ctx);
 }
