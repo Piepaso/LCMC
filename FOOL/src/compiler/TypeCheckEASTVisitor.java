@@ -92,6 +92,50 @@ public class TypeCheckEASTVisitor extends BaseEASTVisitor<TypeNode,TypeException
 		return new BoolTypeNode();
 	}
 
+    @Override
+    public TypeNode visitNode(GreaterEqualNode n) throws TypeException {
+        if (print) printNode(n);
+        IntTypeNode intType = new IntTypeNode();
+        if ( !(isSubtype(visit(n.left), intType) && isSubtype(visit(n.right), intType)) )
+            throw new TypeException("Non integers in greater-equal comparison",n.getLine());
+        return new BoolTypeNode();
+    }
+
+    @Override
+    public TypeNode visitNode(LessEqualNode n) throws TypeException {
+        if (print) printNode(n);
+        IntTypeNode intType = new IntTypeNode();
+        if ( !(isSubtype(visit(n.left), intType) && isSubtype(visit(n.right), intType)) )
+            throw new TypeException("Non integers in less-equal comparison",n.getLine());
+        return new BoolTypeNode();
+    }
+
+    @Override
+    public TypeNode visitNode(AndNode n) throws TypeException {
+        if (print) printNode(n);
+        BoolTypeNode boolType = new BoolTypeNode();
+        if ( !(isSubtype(visit(n.left), boolType) && isSubtype(visit(n.right), boolType)) )
+            throw new TypeException("Non booleans in logical and",n.getLine());
+        return new BoolTypeNode();
+    }
+
+    @Override
+    public TypeNode visitNode(OrNode n) throws TypeException {
+        if (print) printNode(n);
+        BoolTypeNode boolType = new BoolTypeNode();
+        if ( !(isSubtype(visit(n.left), boolType) && isSubtype(visit(n.right), boolType)) )
+            throw new TypeException("Non booleans in logical or",n.getLine());
+        return new BoolTypeNode();
+    }
+
+    @Override
+    public TypeNode visitNode(NotNode n) throws TypeException {
+        if (print) printNode(n);
+        if ( !(isSubtype(visit(n.exp), new BoolTypeNode())) )
+            throw new TypeException("Non boolean in logical not",n.getLine());
+        return new BoolTypeNode();
+    }
+
 	@Override
 	public TypeNode visitNode(TimesNode n) throws TypeException {
 		if (print) printNode(n);
@@ -101,6 +145,15 @@ public class TypeCheckEASTVisitor extends BaseEASTVisitor<TypeNode,TypeException
 		return new IntTypeNode();
 	}
 
+    @Override
+    public TypeNode visitNode(DivNode n) throws TypeException {
+        if (print) printNode(n);
+        if ( !(isSubtype(visit(n.left), new IntTypeNode())
+                && isSubtype(visit(n.right), new IntTypeNode())) )
+            throw new TypeException("Non integers in division",n.getLine());
+        return new IntTypeNode();
+    }
+
 	@Override
 	public TypeNode visitNode(PlusNode n) throws TypeException {
 		if (print) printNode(n);
@@ -109,6 +162,15 @@ public class TypeCheckEASTVisitor extends BaseEASTVisitor<TypeNode,TypeException
 			throw new TypeException("Non integers in sum",n.getLine());
 		return new IntTypeNode();
 	}
+
+    @Override
+    public TypeNode visitNode(MinusNode n) throws TypeException {
+        if (print) printNode(n);
+        if ( !(isSubtype(visit(n.left), new IntTypeNode())
+                && isSubtype(visit(n.right), new IntTypeNode())) )
+            throw new TypeException("Non integers in subtraction",n.getLine());
+        return new IntTypeNode();
+    }
 
 	@Override
 	public TypeNode visitNode(CallNode n) throws TypeException {

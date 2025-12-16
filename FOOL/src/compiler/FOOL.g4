@@ -19,8 +19,15 @@ dec : VAR ID COLON type ASS exp SEMIC  #vardec
     ;
            
 exp     : exp TIMES exp #times
+        | exp DIV exp   #div
         | exp PLUS  exp #plus
-        | exp EQ  exp   #eq 
+        | exp MINUS exp #minus
+        | NOT exp #not
+        | exp AND exp #and
+        | exp OR exp #or
+        | exp EQ  exp   #eq
+        | exp LESSEQ exp #lesseq
+        | exp GTSEQ exp #gtseq
         | LPAR exp RPAR #pars
     	| MINUS? NUM #integer
 	    | TRUE #true     
@@ -42,6 +49,7 @@ type    : INT #intType
 PLUS  	: '+' ;
 MINUS	: '-' ; 
 TIMES   : '*' ;
+DIV     : '/' ;
 LPAR	: '(' ;
 RPAR	: ')' ;
 CLPAR	: '{' ;
@@ -49,7 +57,12 @@ CRPAR	: '}' ;
 SEMIC 	: ';' ;
 COLON   : ':' ; 
 COMMA	: ',' ;
-EQ	    : '==' ;	
+EQ	    : '==' ;
+LESSEQ  : '<=' ;
+GTSEQ   : '>=' ;
+OR      : '||' ;
+AND     : '&&' ;
+NOT     : '!' ;
 ASS	    : '=' ;
 TRUE	: 'true' ;
 FALSE	: 'false' ;

@@ -88,7 +88,25 @@ public class AST {
 		@Override
 		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
 	}
-	
+
+	public static class GreaterEqualNode extends Node {
+		final Node left;
+		final Node right;
+		GreaterEqualNode(Node l, Node r) {left = l; right = r;}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class LessEqualNode extends Node {
+		final Node left;
+		final Node right;
+		LessEqualNode(Node l, Node r) {left = l; right = r;}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
 	public static class TimesNode extends Node {
 		final Node left;
 		final Node right;
@@ -97,11 +115,55 @@ public class AST {
 		@Override
 		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
 	}
-	
+
+	public static class DivNode extends Node {
+		final Node left;
+		final Node right;
+		DivNode(Node l, Node r) {left = l; right = r;}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
 	public static class PlusNode extends Node {
 		final Node left;
 		final Node right;
 		PlusNode(Node l, Node r) {left = l; right = r;}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class MinusNode extends Node {
+		final Node left;
+		final Node right;
+		MinusNode(Node l, Node r) {left = l; right = r;}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class OrNode extends Node {
+		final Node left;
+		final Node right;
+		OrNode(Node l, Node r) {left = l; right = r;}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class AndNode extends Node {
+		final Node left;
+		final Node right;
+		AndNode(Node l, Node r) {left = l; right = r;}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class NotNode extends Node {
+		final Node exp;
+		NotNode(Node e) {exp = e;}
 
 		@Override
 		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
@@ -171,4 +233,98 @@ public class AST {
 		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
 	}
 
+	public static class ClassNode extends DecNode {
+		final String id;
+		final String superId;
+		final List<FieldNode> fields;
+		final List<MethodNode> methods;
+		ClassNode(String i, String s, List<FieldNode> f, List<MethodNode> m) {
+			id=i; superId=s; fields=Collections.unmodifiableList(f); methods=Collections.unmodifiableList(m);
+		}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class FieldNode extends DecNode {
+		final String id;
+		FieldNode(String i, TypeNode t) {id=i; type=t;}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class MethodNode extends DecNode {
+		final String id;
+		final TypeNode retType;
+		final List<ParNode> parlist;
+		final List<DecNode> declist;
+		final Node exp;
+		String label;
+		MethodNode(String i, TypeNode rt, List<ParNode> pl, List<DecNode> dl, Node e) {
+	    	id=i;
+	    	retType=rt;
+	    	parlist=Collections.unmodifiableList(pl);
+	    	declist=Collections.unmodifiableList(dl);
+	    	exp=e;
+	    }
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class ClassCallNode extends Node {
+		final String objId;
+		final String methodId;
+		final List<Node> arglist;
+		STentry entry;
+		STentry methodEntry;
+		int nl;
+		ClassCallNode(String o, String m, List<Node> a) {
+			objId=o; methodId=m; arglist=Collections.unmodifiableList(a);
+		}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class NewNode extends Node {
+		final String id;
+		final List<Node> arglist;
+		STentry entry;
+		NewNode(String i, List<Node> a) {id=i; arglist=Collections.unmodifiableList(a);}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class EmptyNode extends Node {
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class ClassTypeNode extends TypeNode {
+		final List<TypeNode> allFields;
+		final List<ArrowTypeNode> allMethods;
+		ClassTypeNode(List<TypeNode> f, List<ArrowTypeNode> m) {
+			allFields=Collections.unmodifiableList(f);
+			allMethods=Collections.unmodifiableList(m);
+		}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class RefTypeNode extends TypeNode {
+		final String id;
+		RefTypeNode(String i) {id=i;}
+
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
+
+	public static class EmptyTypeNode extends TypeNode {
+		@Override
+		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
+	}
 }

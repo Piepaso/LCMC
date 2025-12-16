@@ -7,7 +7,7 @@ import compiler.lib.*;
 
 public class SymbolTableASTVisitor extends BaseASTVisitor<Void,VoidException> {
 	
-	private List<Map<String, STentry>> symTable = new ArrayList<>();
+	private final List<Map<String, STentry>> symTable = new ArrayList<>();
 	private int nestingLevel=0; // current nesting level
 	private int decOffset=-2; // counter for offset of local declarations at current nesting level 
 	int stErrors=0;
@@ -30,7 +30,7 @@ public class SymbolTableASTVisitor extends BaseASTVisitor<Void,VoidException> {
 		symTable.add(hm);
 	    for (Node dec : n.declist) visit(dec);
 		visit(n.exp);
-		symTable.remove(0);
+		symTable.removeFirst();
 		return null;
 	}
 
@@ -111,6 +111,45 @@ public class SymbolTableASTVisitor extends BaseASTVisitor<Void,VoidException> {
 		visit(n.right);
 		return null;
 	}
+
+    @Override
+    public Void visitNode(GreaterEqualNode n) {
+        if (print) printNode(n);
+        visit(n.left);
+        visit(n.right);
+        return null;
+    }
+
+    @Override
+    public Void visitNode(LessEqualNode n) {
+        if (print) printNode(n);
+        visit(n.left);
+        visit(n.right);
+        return null;
+    }
+
+    @Override
+    public Void visitNode(AndNode n) {
+        if (print) printNode(n);
+        visit(n.left);
+        visit(n.right);
+        return null;
+    }
+
+    @Override
+    public Void visitNode(OrNode n) {
+        if (print) printNode(n);
+        visit(n.left);
+        visit(n.right);
+        return null;
+    }
+
+    @Override
+    public Void visitNode(NotNode n) {
+        if (print) printNode(n);
+        visit(n.exp);
+        return null;
+    }
 	
 	@Override
 	public Void visitNode(TimesNode n) {
@@ -119,6 +158,14 @@ public class SymbolTableASTVisitor extends BaseASTVisitor<Void,VoidException> {
 		visit(n.right);
 		return null;
 	}
+
+    @ Override
+    public Void visitNode(DivNode n) {
+        if (print) printNode(n);
+        visit(n.left);
+        visit(n.right);
+        return null;
+    }
 	
 	@Override
 	public Void visitNode(PlusNode n) {
@@ -127,6 +174,14 @@ public class SymbolTableASTVisitor extends BaseASTVisitor<Void,VoidException> {
 		visit(n.right);
 		return null;
 	}
+
+    @Override
+    public Void visitNode(MinusNode n) {
+        if (print) printNode(n);
+        visit(n.left);
+        visit(n.right);
+        return null;
+    }
 
 	@Override
 	public Void visitNode(CallNode n) {
