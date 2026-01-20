@@ -1,0 +1,3 @@
+
+ho aggiunto il type nei costruttori di tutti i decNode, senza bisogno di aggiungere setType() :
+    per i funNode ho spostato il codice presente nel SymbolTableASTVisitor.

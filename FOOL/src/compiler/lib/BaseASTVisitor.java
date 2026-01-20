@@ -20,7 +20,7 @@ public class BaseASTVisitor<S,E extends Exception> {
     }
 
     protected void printNode(Node n, String s) {
-        System.out.println(indent+extractNodeName(n.getClass().getName())+": "+s);
+        System.out.println(n.getLine()+indent+extractNodeName(n.getClass().getName())+": "+s);
     }
 
     public S visit(Visitable v) throws E {

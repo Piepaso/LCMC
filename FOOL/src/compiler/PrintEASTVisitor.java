@@ -40,6 +40,34 @@ public class PrintEASTVisitor extends BaseEASTVisitor<Void,VoidException> {
 		return null;
 	}
 
+    @Override
+    public Void visitNode(ClassNode n) {
+        printNode(n,n.id);
+        if (n.superId != null) {
+            printNode(n, "extends "+n.superId);
+        }
+        for (FieldNode f : n.fields) visit(f);
+        for (MethodNode m : n.methods) visit(m);
+        return null;
+    }
+
+    @Override
+    public Void visitNode(FieldNode n) {
+        printNode(n,n.id);
+        visit(n.getType());
+        return null;
+    }
+
+    @Override
+    public Void visitNode(MethodNode n) {
+        printNode(n,n.id);
+        visit(n.retType);
+        for (ParNode par : n.parlist) visit(par);
+        for (Node dec : n.declist) visit(dec);
+        visit(n.exp);
+        return null;
+    }
+
 	@Override
 	public Void visitNode(VarNode n) {
 		printNode(n,n.id);
@@ -151,12 +179,47 @@ public class PrintEASTVisitor extends BaseEASTVisitor<Void,VoidException> {
 		return null;
 	}
 
+    @Override
+    public Void visitNode(ClassCallNode n) {
+        printNode(n,n.objId+"."+n.methodId+" at nestinglevel "+n.nl);
+        visit(n.classEntry);
+        visit(n.methodEntry);
+        for (Node arg : n.arglist) visit(arg);
+        return null;
+    }
+
+    @Override
+    public Void visitNode(NewNode n) {
+        printNode(n,n.id+" at nestinglevel "+n.nl);
+        visit(n.entry);
+        return null;
+    }
+
 	@Override
 	public Void visitNode(IdNode n) {
 		printNode(n,n.id+" at nestinglevel "+n.nl); 
 		visit(n.entry);
 		return null;
 	}
+
+    @Override
+    public Void visitNode(ClassTypeNode n) {
+        for (TypeNode f : n.allFields) { visit(f); }
+        for (ArrowTypeNode m : n.allMethods) { visit(m); }
+        return null;
+    }
+
+    @Override
+    public Void visitNode(RefTypeNode n) {
+        printNode(n,n.id);
+        return null;
+    }
+
+    @Override
+    public Void visitNode(EmptyNode n) {
+        printNode(n,"null");
+        return null;
+    }
 
 	@Override
 	public Void visitNode(BoolNode n) {

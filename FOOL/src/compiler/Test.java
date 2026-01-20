@@ -6,10 +6,12 @@ import org.antlr.v4.runtime.tree.*;
 import compiler.lib.*;
 import compiler.exc.*;
 import svm.*;
+//import visualsvm.*;
+import java.nio.file.*;
 
 public class Test {
     public static void main(String[] args) throws Exception {
-    	String fileName = "sorgenti_fool/test_operators.fool";
+    	String fileName = "sorgenti_fool/bankloan.fool";
     	CharStream chars = CharStreams.fromFileName(fileName);
     	FOOLLexer lexer = new FOOLLexer(chars);
     	CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -26,13 +28,13 @@ public class Test {
     	System.out.println();
 
     	System.out.println("Enriching AST via symbol table.");
-    	SymbolTableASTVisitor symtableVisitor = new SymbolTableASTVisitor();
+    	SymbolTableASTVisitor symtableVisitor = new SymbolTableASTVisitor(true);
     	symtableVisitor.visit(ast);
     	System.out.println("You had "+symtableVisitor.stErrors+" symbol table errors.\n");
 
-    	System.out.println("Visualizing Enriched AST.");
+    	/*System.out.println("Visualizing Enriched AST.");
     	new PrintEASTVisitor().visit(ast);
-    	System.out.println();
+    	System.out.println();*/
 
     	System.out.println("Checking Types.");
     	try {
@@ -73,6 +75,7 @@ public class Test {
 
     	System.out.println("Running generated code via Stack Virtual Machine.");
     	ExecuteVM vm = new ExecuteVM(parserASM.code);
+	    //ExecuteVM vm = new ExecuteVM(parserASM.code,parserASM.sourceMap,Files.readAllLines(Paths.get(fileName+".asm")));
     	vm.cpu();
 
     }

@@ -1,0 +1,65 @@
+let
+  /* CLASSE A */
+  class A (n:int) {
+    fun getVal:int () n;
+
+    /* Metodo che accetta A e ritorna A */
+    fun copy:A (other:A) new A(other.getVal());
+  }
+
+  /* CLASSE B extends A */
+  class B extends A (m:int) {
+    /* * ERRORE 1: Overriding Errato (Return Type Widening).
+     * In A, 'copy' ritorna A. Qui ritorna A (che va bene),
+     * ma immaginiamo un metodo 'transform' in A che ritorna B.
+     * Se qui ritornassi A (superclasse) al posto di B (sottoclasse), sarebbe errore.
+     * * Proviamo invece l'errore sui PARAMETRI (Controvarianza violata):
+     * A.copy accetta (A). B.copy non può accettare (B).
+     * Deve accettare (A) o una superclasse di A (se supportassi controvarianza),
+     * ma restringere il parametro a B rompe il principio di sostituzione (LSP).
+     */
+    fun copy:B (other:B) new B(other.getVal(), m);
+  }
+
+  /* CLASSE C non ha relazioni con A o B */
+  class C (x:int) {
+    fun getX:int () x;
+  }
+
+  /* CLASSE D extends A
+   * Testiamo errori di scoping dei campi.
+   */
+  class D extends A (k:int) {
+    /* ERRORE 2: Scoping / Symbol Table.
+     * 'm' è un campo di B, non di A né di D.
+     * Il compilatore non deve trovarlo.
+     */
+    fun getM:int () m;
+  }
+
+  var objA:A = new A(10);
+  var objB:B = new B(20, 30);
+  var objC:C = new C(40);
+
+  /* ERRORE 3: Assegnazione Illegale (Subtyping violato).
+   * Non puoi mettere un padre (A) in una variabile figlio (B).
+   */
+  var wrongAssign:B = new A(5);
+
+  /* ERRORE 4: Type Mismatch nei parametri.
+   * Il costruttore di B vuole (int, int).
+   * Qui passiamo (int, C).
+   */
+  var wrongConstr:B = new B(10, objC);
+
+in
+  print (
+    /* ERRORE 5: If-Then-Else con rami incompatibili.
+     * THEN ritorna tipo 'A' (oggetto).
+     * ELSE ritorna tipo 'int' (primitivo).
+     * Non esiste un LCA (Lowest Common Ancestor) tra oggetto e int.
+     */
+    if (objA.getVal() >= 0)
+      then { objA }
+      else { 0 }
+  );

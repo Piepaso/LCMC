@@ -31,15 +31,14 @@ public class AST {
 		final List<ParNode> parlist;
 		final List<DecNode> declist; 
 		final Node exp;
-		FunNode(String i, TypeNode rt, List<ParNode> pl, List<DecNode> dl, Node e) {
+		FunNode(String i, TypeNode rt, List<ParNode> pl, List<DecNode> dl, Node e, ArrowTypeNode funType) {
 	    	id=i; 
 	    	retType=rt; 
 	    	parlist=Collections.unmodifiableList(pl); 
 	    	declist=Collections.unmodifiableList(dl); 
 	    	exp=e;
+            type = funType;
 	    }
-		
-		//void setType(TypeNode t) {type = t;}
 		
 		@Override
 		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
@@ -238,9 +237,15 @@ public class AST {
 		final String superId;
 		final List<FieldNode> fields;
 		final List<MethodNode> methods;
+        STentry superEntry;
 		ClassNode(String i, String s, List<FieldNode> f, List<MethodNode> m) {
-			id=i; superId=s; fields=Collections.unmodifiableList(f); methods=Collections.unmodifiableList(m);
+			id=i;
+            superId=s;
+            fields=Collections.unmodifiableList(f);
+            methods=Collections.unmodifiableList(m);
 		}
+
+        public void setType(ClassTypeNode t) { type=t; }
 
 		@Override
 		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
@@ -248,7 +253,9 @@ public class AST {
 
 	public static class FieldNode extends DecNode {
 		final String id;
-		FieldNode(String i, TypeNode t) {id=i; type=t;}
+        int offset;
+
+		FieldNode(String i, TypeNode t) { id=i; type=t;}
 
 		@Override
 		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
@@ -260,14 +267,17 @@ public class AST {
 		final List<ParNode> parlist;
 		final List<DecNode> declist;
 		final Node exp;
+        int offset;
 		String label;
-		MethodNode(String i, TypeNode rt, List<ParNode> pl, List<DecNode> dl, Node e) {
-	    	id=i;
-	    	retType=rt;
-	    	parlist=Collections.unmodifiableList(pl);
-	    	declist=Collections.unmodifiableList(dl);
-	    	exp=e;
-	    }
+
+        MethodNode(String i, TypeNode rt, List<ParNode> pl, List<DecNode> dl, Node e, ArrowTypeNode methType) {
+            id=i;
+            retType=rt;
+            parlist=Collections.unmodifiableList(pl);
+            declist=Collections.unmodifiableList(dl);
+            exp=e;
+            type = methType;
+        }
 
 		@Override
 		public <S,E extends Exception> S accept(BaseASTVisitor<S,E> visitor) throws E {return visitor.visitNode(this);}
@@ -277,9 +287,9 @@ public class AST {
 		final String objId;
 		final String methodId;
 		final List<Node> arglist;
-		STentry entry;
+		STentry classEntry;
 		STentry methodEntry;
-		int nl;
+        int nl;
 		ClassCallNode(String o, String m, List<Node> a) {
 			objId=o; methodId=m; arglist=Collections.unmodifiableList(a);
 		}
@@ -292,6 +302,7 @@ public class AST {
 		final String id;
 		final List<Node> arglist;
 		STentry entry;
+        int nl;
 		NewNode(String i, List<Node> a) {id=i; arglist=Collections.unmodifiableList(a);}
 
 		@Override

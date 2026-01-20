@@ -1,0 +1,83 @@
+let
+  /* * CLASSE BASE
+   * Test base di definizione campi e metodi.
+   */
+  class General (baseVal:int) {
+    fun getVal:int () baseVal;
+
+    fun identity:General (g:General) g;
+  }
+
+  /* * SOTTOCLASSE LIVELLO 1
+   * Test: Ereditarietà semplice.
+   */
+  class Specific extends General (specVal:int) {
+    fun getSpec:int () specVal;
+
+    /* * OVERRIDING CON COVARIANZA
+     * Il metodo identity in General ritorna General.
+     * Qui ritorna Specific (sottotipo di General).
+     * Il compilatore deve accettarlo.
+     */
+    fun identity:Specific (g:General)
+      if (g == null)
+      then { new Specific(baseVal, specVal) }
+      else { new Specific(g.getVal(), 10) };
+  }
+
+  /* * SOTTOCLASSE LIVELLO 2
+   * Test: Catena di ereditarietà profonda.
+   */
+  class MoreSpecific extends Specific (extra:int) {
+    fun getExtra:int () extra;
+  }
+
+  /* * CLASSE TESTER
+   * Questa classe serve a stressare il type checker con logiche annidate.
+   */
+  class Tester (root:General) {
+
+    /*
+     * TEST IF-THEN-ELSE LCA (Lowest Common Ancestor)
+     * Ramo THEN: ritorna MoreSpecific
+     * Ramo ELSE: ritorna Specific
+     * * Il compilatore deve inferire che il tipo di ritorno dell'IF è 'Specific',
+     * che è compatibile con il tipo di ritorno dichiarato 'General'.
+     */
+    fun testLca:General (condition:int)
+      if (condition >= 10)
+      then { new MoreSpecific(1, 2, 3) }
+      else { new Specific(4, 5) };
+
+    /*
+     * TEST PARAMETRI E SUBTYPING
+     * Accetta 'General', ma nel main passeremo 'MoreSpecific'.
+     * Usa anche lo shadowing: il parametro 'root' nasconde il campo 'root'.
+     */
+    fun exec:int (root:General)
+      if (root == null)
+      then { 0 }
+      else { root.getVal() };
+  }
+
+  /* * ISTANZIAZIONE VARIABILI
+   * Test del subtyping nelle assegnazioni.
+   */
+  var obj1:General = new Specific(10, 20);
+  var obj2:Specific = new MoreSpecific(30, 40, 50);
+
+  /* Test di assegnazione con LCA tra un oggetto e null */
+  var obj3:General = if (obj1.getVal() == 10) then { null } else { obj2 };
+
+  var t:Tester = new Tester(obj1);
+
+  var p:General = t.testLca(15);
+
+in
+  print (
+    /* * Chiamata polimorfica:
+     * t.exec si aspetta (General), noi passiamo (MoreSpecific).
+     * t.testLca ritorna (General), noi invochiamo su quello (getVal).
+     */
+    t.exec(obj2) + p.getVal()
+  );

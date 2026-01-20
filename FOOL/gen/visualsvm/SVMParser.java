@@ -1,5 +1,5 @@
-// Generated from /home/paso/Documents/Uni/LCMC/progetto_compilatore/FOOL/src/svm/SVM.g4 by ANTLR 4.13.2
-package svm;
+// Generated from /home/paso/Documents/Uni/LCMC/progetto_compilatore/FOOL/src/visualsvm/SVM.g4 by ANTLR 4.13.2
+package visualsvm;
 
 import java.util.*;
 
